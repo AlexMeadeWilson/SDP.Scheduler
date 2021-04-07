@@ -1,2 +1,2 @@
-# SDP.Scheduler.UI
-SDP.Scheduler.UI
+# SDP.Scheduler
+SDP.Scheduler
