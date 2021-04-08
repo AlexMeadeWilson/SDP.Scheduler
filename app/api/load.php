@@ -1,8 +1,8 @@
 <?php
-// load.php
-///$app->get('/api/load', function ($request, $response, $args)
-//{
-    require_once('../../private/connect.php');
+
+$app->get('/api/load', function ($request, $response, $args)
+{
+    require_once('../private/connect.php');
     $data = array();
     $query = "SELECT * FROM events ORDER BY id";
     $statement = $connect->prepare($query);
@@ -18,8 +18,10 @@
             'end' => $row["end_event"]
         );
     }
-    echo json_encode($data);
-    //$response->getBody()->write("<p>This is load.php");
-    //return $response;
-//});
+
+    $response->getBody()->write(json_encode($data));
+    return $response    
+          ->withHeader('Content-Type', 'application/json')
+          ->withStatus(201);
+});
 ?>
