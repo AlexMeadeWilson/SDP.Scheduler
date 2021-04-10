@@ -1,8 +1,9 @@
 <?php
 // insert.php
-//$app->post('/api/insert', function ($request, $response, $args)
-//
+$app->post('/api/insert/', function ($request, $response, $args)
+{
     require_once('../../private/connect.php');
+
     if(isset($_POST["title"]))
     {
         $query = "INSERT INTO events (title, start_event, end_event) VALUES (:title, :start_event, :end_event)";
@@ -15,6 +16,6 @@
             )
         );
     }
-    //return $response;
-//});
+    return $response;
+});
 ?>

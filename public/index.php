@@ -1,20 +1,19 @@
 <?php
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Factory\AppFactory;
+use SlimJIM\ServiceProvider;
+
+$serviceProvider = new ServiceProvider();
+AppFactory::setContainer(
+    $serviceProvider->build()
+);
+
 $app = AppFactory::create();
 
-require_once('../app/api/load.php');
-
-/* GET: Hello World! */
-$app->get('/', function (Request $request, Response $response, $args)
-{
-    $view = file_get_contents('./front-end/scheduler.html');
-    $response->getBody()->write($view);
-    return $response;
-});
+require __DIR__ . '/../app/api/Routes/routes.php';
 
 $app->run();

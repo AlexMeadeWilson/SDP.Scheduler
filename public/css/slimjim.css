@@ -1,0 +1,15 @@
+.logo_outer_container {
+    text-align:center;
+    border: 0px solid red;
+}
+
+.logo_inner_container {
+    border: 0px solid blue;
+    width: 1111px;
+    display:inline-block;
+}
+
+.logo {
+    height: 100px;
+    float:left;
+}
