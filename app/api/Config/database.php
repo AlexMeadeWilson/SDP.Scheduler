@@ -2,9 +2,9 @@
 
 return [
     'settings' => [
-        // Slim Settings
         'determineRouteBeforeAppMiddleware' => false,
         'displayErrorDetails' => true,
+        // Database Connection Details
         'db' => [
             'driver' => 'mysql',
             'host' => 'localhost',

@@ -8,14 +8,18 @@ use SlimJIM\Repositories\EventsRepository;
 use SlimJIM\Controllers\UsersController;
 use SlimJIM\Repositories\UsersRepository;
 
-class ServiceProvider {
+class ServiceProvider
+{
+    // Variables
     private $container;
 
+    // Constructor
     public function __construct()
     {
         $this->container = new Container();
     }
 
+    // Build the Container
     public function build(): Container 
     {
         $this->buildDatabase();
@@ -25,11 +29,13 @@ class ServiceProvider {
         return $this->container;
     }
 
+    // Database
     private function buildDatabase()
     {
         $config = require(__DIR__ .'/Config/database.php');
 
-        $this->container->set('db', function($container) use($config) {
+        $this->container->set('db', function($container) use($config) 
+        {
 
             $capsule = new \Illuminate\Database\Capsule\Manager;
             $capsule->addConnection($config['settings']['db']);
@@ -41,30 +47,40 @@ class ServiceProvider {
         });
     }
 
+    // Repositories
     private function buildRepositories()
     {
-        $this->container->set('EventsRepository', function($container) {
+        // Repository: Events
+        $this->container->set('EventsRepository', function($container)
+        {
             return new EventsRepository(
                 $container->get('db')
             );
         });
 
-        $this->container->set('UsersRepository', function($container) {
+        // Repository: Users
+        $this->container->set('UsersRepository', function($container)
+        {
             return new UsersRepository(
                 $container->get('db')
             );
         });
     }
 
+    // Controllers
     private function buildControllers()
     {
-        $this->container->set('EventsController', function($container) {
+        // Controller: Events
+        $this->container->set('EventsController', function($container)
+        {
             return new EventsController(
                $container->get('EventsRepository')
             );
         });
 
-        $this->container->set('UsersController', function($container) {
+        // Controller: Users
+        $this->container->set('UsersController', function($container)
+        {
             return new UsersController(
                $container->get('UsersRepository')
             );
