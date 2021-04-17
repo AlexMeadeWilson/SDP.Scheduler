@@ -5,11 +5,23 @@
 
 .logo_inner_container {
     border: 0px solid blue;
-    width: 1111px;
+    width: 1170px;
     display:inline-block;
 }
 
 .logo {
-    height: 100px;
+    height: 110px;
     float:left;
+    padding-bottom: 10px;
+}
+
+.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso form {
+    font-family: Arial, Helvetica, sans-serif; 
+    color: black
+}
+.bootstrap-iso form button, .bootstrap-iso form button:hover {
+    color: white !important;
+}
+.asteriskField {
+    color: red;
 }

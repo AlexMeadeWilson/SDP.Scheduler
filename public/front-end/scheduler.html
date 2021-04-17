@@ -2,18 +2,33 @@
 <html>
     <head>
         <title>SlimJIM | Job Management</title>
+        <!-- Favicon links -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#003860">
+        <meta name="msapplication-TileColor" content="#003860">
+        <meta name="theme-color" content="#ffffff">
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" />
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" /> -->
         <link rel="stylesheet" href="https://use.typekit.net/ttd3vdt.css">
         <link rel="stylesheet" href="../css/slimjim.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
         <script src="/front-end/config.js"></script>
+
         <script>
             $(document).ready(function()
             {
+                /* calendar */
                 var calendar = $('#calendar').fullCalendar({
                     editable:true,
                     header:
@@ -87,23 +102,35 @@
                             }
                         });
                     },
+                    // eventClick:function(event)
+                    // {
+                    //     if(confirm("Are you sure you want to delete this?"))
+                    //     {
+                    //         $.ajax({
+                    //             url: api_host + "/api/events/" + event.id,
+                    //             type:"DELETE",
+                                
+                    //             success:function()
+                    //             {
+                    //                 calendar.fullCalendar('refetchEvents');
+                    //                 alert("Event Deleted");
+                    //             }
+                    //         })
+                    //     }
+                    // },
                     eventClick:function(event)
                     {
-                        if(confirm("Are you sure you want to delete this?"))
-                        {
-                            $.ajax({
-                                url: api_host + "/api/events/" + event.id,
-                                type:"DELETE",
-                                
-                                success:function()
-                                {
-                                    calendar.fullCalendar('refetchEvents');
-                                    alert("Event Deleted");
-                                }
-                            })
-                        }
+                        var start = $.fullCalendar.formatDate(event.start, "DD MMMM YYYY HH:mm");
+                        var end = $.fullCalendar.formatDate(event.end, "DD MMMM YYYY HH:mm");
+                        var title = event.title;
+
+                        $('#eventTitle').html(title);
+                        $('#eventStart').html(start);
+                        $('#eventEnd').html(end);
+                        // $('#eventUrl').attr('href',event.url);
+                        $('#eventViewModal').modal();
                     },
-                });
+                }); /*./calendar */
             });
         </script>
     </head>
@@ -114,11 +141,145 @@
         <p align="center">Job Management Interface</p> -->
         <div class="logo_outer_container">
             <div class="logo_inner_container">
-                <img src="../images/SlimJIM_FullLogo.png" alt="SlimJIM Logo" class="logo" />
+                <!-- <img src="../images/SlimJIM_FullLogo.png" alt="SlimJIM Logo" class="logo" /> -->
+                <img src="../images/SlimJIM_FullLogo.svg" alt="SlimJIM Logo" class="logo" />
             </div>
         </div>
         <div class="container">
             <div id="calendar"></div>
+
+            <!-- eventCreateModal Starts -->
+
+            <!-- Include Date Range Picker -->
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css"/>
+
+            <div class="modal fade" id="eventCreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <!-- <h4 class="modal-title w-100 font-weight-bold">Create Event</h4> -->
+                            <strong><h3 class="modal-title" id="modalTitle">Create Event</h3></strong>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div><!-- 
+                        <div class="modal-body mx-3">
+                            <div class="md-form mb-5">
+                                <label data-error="wrong" data-success="right" for="orangeForm-name">Event Title</label>
+                                <input type="text" id="title" class="form-control validate">                                
+                            </div>
+                            <div class="md-form mb-5">
+                                <label data-error="wrong" data-success="right" for="orangeForm-email">Event Start</label>
+                                <input type="datetime" id="start" class="form-control validate">
+                            </div>
+                            <div class="md-form mb-4">
+                                <label data-error="wrong" data-success="right" for="orangeForm-pass">Event End</label>
+                                <input type="datetime" id="end" class="form-control validate">                                
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">CREATE</button>
+                        </div> -->
+
+                        <!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
+                        <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+                        <!--Font Awesome (added because you use icons in your prepend/append)-->
+                        <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+                        <!-- HTML Form (wrapped in a .bootstrap-iso div) -->
+                        <!-- Build using https://formden.com/form-builder/ -->
+                        <div class="bootstrap-iso">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-10 col-sm-10 col-xs-12">
+                                        <form class="form-horizontal" method="post">
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-2 requiredField" for="title">Title <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-briefcase"></i></div>
+                                                        <input class="form-control" id="title" name="title" placeholder="Event Title" type="text"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-2 requiredField" for="start">Start <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                                        <input class="form-control" id="start" name="date" placeholder="DD/MM/YYYY" type="text"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-2 requiredField" for="end">End <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                                        <input class="form-control" id="end" name="date" placeholder="DD/MM/YYYY" type="text"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-10 col-sm-offset-2">
+                                                    <button class="btn btn-primary " name="submit" type="submit">Create</button>
+                                                    <button class="btn btn-secondary " type="button" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            $(document).ready(function(){
+                                var date_input=$('input[name="date"]');
+                                var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+                                date_input.datepicker({
+                                    format: 'dd/mm/yyyy',
+                                    container: container,
+                                    todayHighlight: true,
+                                    autoclose: true,
+                                })
+                            })
+                        </script>
+                        
+
+                    </div> <!-- ./modal-content -->
+                </div> <!-- ./modal-dialog -->
+            </div> <!-- ./modal -->
+            <!-- eventCreateModal Ends -->
+
+            <!-- eventViewModal Starts -->
+            <div class="modal fade" id="eventViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <strong><h3 class="modal-title" id="eventTitle"></h3></strong>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="eventStart"></div>
+                        <div class="modal-body" id="eventEnd"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- eventViewModal Ends -->
+
+            <!-- Testing Buttons -->
+            <div class="text-center">
+                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#eventCreateModal">eventCreateModal</a>
+                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#eventViewModal">eventViewModal</a>
+            </div>
         </div>
     </body>
 </html>
