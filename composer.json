@@ -12,5 +12,8 @@
         "psr-4": {
             "SlimJIM\\": "app/api/"
         }
+    },
+    "config": {
+        "platform-check": false
     }
 }
