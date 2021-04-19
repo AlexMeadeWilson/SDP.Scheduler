@@ -1,0 +1,3 @@
+function getCalendar() {
+    return $('#calendar');
+}

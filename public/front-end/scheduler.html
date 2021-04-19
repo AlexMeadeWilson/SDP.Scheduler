@@ -49,23 +49,28 @@
                     selectHelper:true,
                     select: function(start, end, allDay)
                     {
-                        var title = prompt("Enter Event Title");
-                        if(title)
-                        {
-                            var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
-                            var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
-                            $.ajax({
-                                url: api_host + '/api/events',
-                                type:"POST",
-                                data:{title:title, start:start, end:end},
+                        openEventModal({
+                            title: '',
+                            start: start,
+                            end: end,
+                        });
+                        // var title = prompt("Enter Event Title");
+                        // if(title)
+                        // {
+                        //     var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
+                        //     var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
+                        //     $.ajax({
+                        //         url: api_host + '/api/events',
+                        //         type:"POST",
+                        //         data:{title:title, start:start, end:end},
 
-                                success:function()
-                                {
-                                    calendar.fullCalendar('refetchEvents');
-                                    alert("Event added successfully");
-                                }
-                            })
-                        }
+                        //         success:function()
+                        //         {
+                        //             calendar.fullCalendar('refetchEvents');
+                        //             alert("Event added successfully");
+                        //         }
+                        //     })
+                        // }
                     },
                     editable:true,
                     eventResize:function(event)
@@ -120,21 +125,7 @@
                     // },
                     eventClick:function(event)
                     {
-                        var start = $.fullCalendar.formatDate(event.start, "DD MMMM YYYY HH:mm");
-                        var end = $.fullCalendar.formatDate(event.end, "DD MMMM YYYY HH:mm");
-                        var title = event.title;
-
-                        // $('#eventtitle').html(title);
-                        // $('#eventstart').html(start);
-                        // $('#eventend').html(end);
-                        // $('#eventUrl').attr('href',event.url);
-                        // $('#eventViewModal').modal();
-
-                        $('#modalTitle').html("Event Details")
-                        $('#eventtitle').val(title);
-                        $('#eventstart').val(start);
-                        $('#eventend').val(end);
-                        $('#eventCreateModal').modal();
+                        openEventModal(event);
                     },
                 }); /*./calendar */
             });
@@ -152,57 +143,40 @@
             </div>
         </div>
         <div class="container">
+            <!-- FullCalendar -->
             <div id="calendar"></div>
 
-            <!-- eventCreateModal Starts -->
-
-            <!-- Include Date Range Picker -->
+            <!-- Include DatePicker -->
             <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-
+            
+            <!-- Include DateTimePicker (Not yet in use) - TODO: Upgrade to DateTimePicker -->
             <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css"/>
-
-            <div class="modal fade" id="eventCreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            
+            <!-- modaleventcreate Starts -->
+            <div class="modal fade" id="modaleventcreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header text-center">
-                            <!-- <h4 class="modal-title w-100 font-weight-bold">Create Event</h4> -->
-                            <strong><h3 class="modal-title" id="modalTitle">Create Event</h3></strong>
+                            <h3 class="modal-title w-100 font-weight-bold" id="modaltitle">Create Event</h3>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                        </div><!-- 
-                        <div class="modal-body mx-3">
-                            <div class="md-form mb-5">
-                                <label data-error="wrong" data-success="right" for="orangeForm-name">Event Title</label>
-                                <input type="text" id="title" class="form-control validate">                                
-                            </div>
-                            <div class="md-form mb-5">
-                                <label data-error="wrong" data-success="right" for="orangeForm-email">Event Start</label>
-                                <input type="datetime" id="start" class="form-control validate">
-                            </div>
-                            <div class="md-form mb-4">
-                                <label data-error="wrong" data-success="right" for="orangeForm-pass">Event End</label>
-                                <input type="datetime" id="end" class="form-control validate">                                
-                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">CREATE</button>
-                        </div> -->
-
+                        
                         <!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
                         <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
                         <!--Font Awesome (added because you use icons in your prepend/append)-->
                         <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+                        
                         <!-- HTML Form (wrapped in a .bootstrap-iso div) -->
                         <!-- Build using https://formden.com/form-builder/ -->
                         <div class="bootstrap-iso">
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-md-10 col-sm-10 col-xs-12">
-                                        <form class="form-horizontal" method="post">
+                                        <form class="form-horizontal" id="formeventcreate" method="POST">
                                             <div class="form-group ">
                                                 <label class="control-label col-sm-2 requiredField" for="title">Title <span class="asteriskField">*</span></label>
                                                 <div class="col-sm-10">
@@ -217,7 +191,7 @@
                                                 <div class="col-sm-10">
                                                     <div class="input-group">
                                                         <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                                        <input class="form-control" id="eventstart" name="date" type="text"/>
+                                                        <input class="form-control" id="eventstart" name="eventstart" type="text"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -226,7 +200,7 @@
                                                 <div class="col-sm-10">
                                                     <div class="input-group">
                                                         <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                                        <input class="form-control" id="eventend" name="date" type="text"/>
+                                                        <input class="form-control" id="eventend" name="eventend" type="text"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -241,6 +215,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Script for DatePicker TODO: Upgrade this to DateTimePicker -->
                         <script>
                             $(document).ready(function(){
                                 var date_input=$('input[name="date"]');
@@ -253,15 +228,13 @@
                                 })
                             })
                         </script>
-                        
-
                     </div> <!-- ./modal-content -->
                 </div> <!-- ./modal-dialog -->
             </div> <!-- ./modal -->
-            <!-- eventCreateModal Ends -->
+            <!-- modaleventcreate Ends -->
 
-            <!-- eventViewModal Starts -->
-            <div class="modal fade" id="eventViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <!-- modalEventEdit Starts -->
+            <div class="modal fade" id="modalEventEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header text-center">
@@ -279,13 +252,37 @@
                     </div>
                 </div>
             </div>
-            <!-- eventViewModal Ends -->
+            <!-- modalEventEdit Ends -->
+
+            <!-- anotherModal Starts -->
+            <!-- 
+            <div class="modal-body mx-3">
+                <div class="md-form mb-5">
+                    <label data-error="wrong" data-success="right" for="orangeForm-name">Event Title</label>
+                    <input type="text" id="title" class="form-control validate">                                
+                </div>
+                <div class="md-form mb-5">
+                    <label data-error="wrong" data-success="right" for="orangeForm-email">Event Start</label>
+                    <input type="datetime" id="start" class="form-control validate">
+                </div>
+                <div class="md-form mb-4">
+                    <label data-error="wrong" data-success="right" for="orangeForm-pass">Event End</label>
+                    <input type="datetime" id="end" class="form-control validate">                                
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">CREATE</button>
+            </div> -->
+            <!-- anotherModal Ends -->
 
             <!-- Testing Buttons -->
             <div class="text-center">
-                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#eventCreateModal">eventCreateModal</a>
-                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#eventViewModal">eventViewModal</a>
+                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modaleventcreate">modaleventcreate</a>
+                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modaleventedit">modaleventedit</a>
             </div>
         </div>
+        <script src="front-end/scripts/constants.js"></script>
+        <script src="front-end/scripts/events.js"></script>
     </body>
 </html>
