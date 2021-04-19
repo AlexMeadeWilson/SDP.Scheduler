@@ -4,7 +4,7 @@ $(document).ready(function()
 });
 
 function registerModalListeners() {
-    $('#formeventcreate').on('submit', function(e) {
+    getFormEventCreate().on('submit', function(e) {
         e.preventDefault();
         var values = {};
         $(this).find('input, textarea, select').each(function(i, field){
@@ -24,11 +24,11 @@ function openEventModal(event) {
     var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
     var title = event.title;
 
-    $('#modaltitle').html("Event Details");
-    $('#eventtitle').val(title);
-    $('#eventstart').val(start);
-    $('#eventend').val(end);
-    $('#modaleventcreate').modal();
+    getModalTitle().html("Event Details");
+    getEventTitle().val(title);
+    getEventStart().val(start);
+    getEventEnd().val(end);
+    getModalEventCreate().modal();
 }
 
 function createEvent(event) {
@@ -38,8 +38,9 @@ function createEvent(event) {
         data: event,
         success: function()
         {
-            $('#calendar').fullCalendar('refetchEvents');
-            $('#modaleventcreate').modal('hide');
+            getCalendar().fullCalendar('refetchEvents');
+            getModalEventCreate().modal('hide');
+            // TODO: Add a confirmation modal call here.
         }
     })
 }
