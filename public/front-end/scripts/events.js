@@ -24,7 +24,7 @@ function openEventModal(event) {
     var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
     var title = event.title;
 
-    getModalTitle().html("Event Details");
+    getModalTitle().html("Job Details");
     getEventTitle().val(title);
     getEventStart().val(start);
     getEventEnd().val(end);

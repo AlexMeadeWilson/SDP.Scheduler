@@ -158,8 +158,8 @@
             <div class="modal fade" id="modaleventcreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header text-center">
-                            <h3 class="modal-title w-100 font-weight-bold" id="modaltitle">Create Event</h3>
+                        <div class="modal-header text-center" style="height: 64px;">
+                            <h3 class="modal-title w-100 font-weight-bold" id="modaltitle"></h3>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -177,18 +177,18 @@
                                 <div class="row">
                                     <div class="col-md-10 col-sm-10 col-xs-12">
                                         <form class="form-horizontal" id="formeventcreate" method="POST">
-                                            <div class="form-group ">
-                                                <label class="control-label col-sm-2 requiredField" for="title">Title <span class="asteriskField">*</span></label>
-                                                <div class="col-sm-10">
+                                            <div class="form-group " style="margin-top: 15px;" >
+                                                <label class="control-label col-sm-5 requiredField" for="title">Job Title <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
                                                     <div class="input-group">
                                                         <div class="input-group-addon"><i class="fa fa-briefcase"></i></div>
-                                                        <input class="form-control" id="eventtitle" name="eventTitle" type="text" value="" />
+                                                        <input class="form-control" id="eventtitle" name="eventTitle" type="text" value="" placeholder="Enter the Job Title" />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group ">
-                                                <label class="control-label col-sm-2 requiredField" for="start">Start <span class="asteriskField">*</span></label>
-                                                <div class="col-sm-10">
+                                                <label class="control-label col-sm-5 requiredField" for="start">Scheduled Start <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
                                                     <div class="input-group">
                                                         <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                                         <input class="form-control" id="eventstart" name="eventstart" type="text"/>
@@ -196,16 +196,52 @@
                                                 </div>
                                             </div>
                                             <div class="form-group ">
-                                                <label class="control-label col-sm-2 requiredField" for="end">End <span class="asteriskField">*</span></label>
-                                                <div class="col-sm-10">
+                                                <label class="control-label col-sm-5 requiredField" for="end">Scheduled End <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
                                                     <div class="input-group">
                                                         <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                                         <input class="form-control" id="eventend" name="eventend" type="text"/>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="description">Job Description <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-info-circle"></i></div>
+                                                        <textarea class="form-control" id="eventdescription" name="eventdescription" style="min-width: 100%; resize: none;" maxlength="1024" placeholder="Enter the Job Description" ></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="contact">Contact Name <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                                        <input class="form-control" id="eventcontact" name="eventcontact" type="text" placeholder="Enter the Contact Name" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="site">Site Address <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-globe"></i></div>
+                                                        <input class="form-control" id="eventsite" name="eventsite" type="text" placeholder="53.331021, -6.278107"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="technician">Technician <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                                        <input class="form-control" id="eventtechnician" name="eventtechnician" type="text" placeholder="Enter the Technician" />
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="form-group">
-                                                <div class="col-sm-10 col-sm-offset-2">
+                                                <div class="col-sm-7 col-sm-offset-5">
                                                     <button class="btn btn-primary " name="submit" type="submit">Create</button>
                                                     <button class="btn btn-secondary " type="button" data-dismiss="modal">Cancel</button>
                                                 </div>
