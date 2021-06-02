@@ -7,11 +7,18 @@
     border: 0px solid blue;
     width: 1170px;
     display:inline-block;
+    text-align: left;
 }
 
-.logo {
+.logo_slimjim img {
     height: 110px;
     float:left;
+    padding-bottom: 10px;
+}
+
+.logo_merlinmedia img {
+    height: 110px;
+    float:right;
     padding-bottom: 10px;
 }
 

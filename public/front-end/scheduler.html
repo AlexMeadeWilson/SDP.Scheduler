@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>SlimJIM | Job Management</title>
+        <title>Merlin Media (by SlimJIM)</title>
         <!-- Favicon links -->
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -10,15 +10,15 @@
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#003860">
         <meta name="msapplication-TileColor" content="#003860">
         <meta name="theme-color" content="#ffffff">
-
+        <!-- Stylesheets -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
-        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" /> -->
         <link rel="stylesheet" href="https://use.typekit.net/ttd3vdt.css">
         <link rel="stylesheet" href="../css/slimjim.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+        <!-- Scripts -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
@@ -49,8 +49,7 @@
                     selectHelper:true,
                     select: function(start, end, allDay)
                     {
-                        openEventModal({
-                            title: '',
+                        createEventModal({
                             start: start,
                             end: end,
                         });
@@ -75,16 +74,22 @@
                     editable:true,
                     eventResize:function(event)
                     {
+                        var status = event.status;
+                        var title = event.title;
                         var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
                         var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
-                        var title = event.title;
+                        var description = event.description;
+                        var contact = event.contact;
+                        var site = event.site;
+                        var technician = event.technician;
                         $.ajax({
                             url: api_host + "/api/events/" + event.id,
                             type:"POST",
-                            data:{title:title, start:start, end:end},
+                            data:{status:status, title:title, start:start, end:end, description:description, contact:contact, site:site, technician:technician},
                             
                             success:function()
                             {
+                                // TODO: Change this to a confirmation modal.
                                 calendar.fullCalendar('refetchEvents');
                                 alert("Event Updated");
                             }
@@ -92,40 +97,31 @@
                     },
                     eventDrop:function(event)
                     {
+                        var status = event.status;
+                        var title = event.title;
                         var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
                         var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
-                        var title = event.title;
+                        var description = event.description;
+                        var contact = event.contact;
+                        var site = event.site;
+                        var technician = event.technician;
                         $.ajax({
                             url: api_host + "/api/events/" + event.id,
                             type:"POST",
-                            data:{title:title, start:start, end:end},
+                            data:{status:status, title:title, start:start, end:end, description:description, contact:contact, site:site, technician:technician},
                             
                             success:function()
                             {
+                                // TODO: Change this to a confirmation modal.
                                 calendar.fullCalendar('refetchEvents');
                                 alert("Event Updated");
                             }
                         });
                     },
-                    // eventClick:function(event)
-                    // {
-                    //     if(confirm("Are you sure you want to delete this?"))
-                    //     {
-                    //         $.ajax({
-                    //             url: api_host + "/api/events/" + event.id,
-                    //             type:"DELETE",
-                                
-                    //             success:function()
-                    //             {
-                    //                 calendar.fullCalendar('refetchEvents');
-                    //                 alert("Event Deleted");
-                    //             }
-                    //         })
-                    //     }
-                    // },
                     eventClick:function(event)
                     {
-                        openEventModal(event);
+                        // TODO: This needs to go back to updateEventModal when parsing back to the UI is solved.
+                        updateEventModal(event)
                     },
                 }); /*./calendar */
             });
@@ -133,13 +129,10 @@
     </head>
     <body>
         <br />
-        <!-- <h2 align="center"><a href="#">SlimJim</a></h2>
-        <br />
-        <p align="center">Job Management Interface</p> -->
         <div class="logo_outer_container">
             <div class="logo_inner_container">
-                <!-- <img src="../images/SlimJIM_FullLogo.png" alt="SlimJIM Logo" class="logo" /> -->
-                <img src="../images/SlimJIM_FullLogo.svg" alt="SlimJIM Logo" class="logo" />
+                <div class="logo_slimjim"><img src="../images/SlimJIM_FullLogo.svg" alt="SlimJIM Logo" /></div>
+                <div class="logo_merlinmedia"><img src="../images/Merlin_Media_Logo.svg" alt="Merlin Media Logo" /></div>
             </div>
         </div>
         <div class="container">
@@ -160,32 +153,47 @@
                     <div class="modal-content">
                         <div class="modal-header text-center" style="height: 64px;">
                             <h3 class="modal-title w-100 font-weight-bold" id="modaltitle"></h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
-                        
                         <!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
                         <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
-                        <!--Font Awesome (added because you use icons in your prepend/append)-->
                         <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
-                        
-                        <!-- HTML Form (wrapped in a .bootstrap-iso div) -->
-                        <!-- Build using https://formden.com/form-builder/ -->
                         <div class="bootstrap-iso">
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-md-10 col-sm-10 col-xs-12">
                                         <form class="form-horizontal" id="formeventcreate" method="POST">
+                                            <!-- Job Id -->
                                             <div class="form-group " style="margin-top: 15px;" >
+                                                <label class="control-label col-sm-5 requiredField" for="id">Job Id </label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-briefcase"></i></div>
+                                                        <input class="form-control" id="eventid" name="eventid" type="text" value="" placeholder="Job Id (Auto-generated)" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>                                            
+                                            <!-- Job Status -->
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="status">Job Status </label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-info-circle"></i></div>
+                                                        <input class="form-control" id="eventstatus" name="eventstatus" type="text" placeholder="Job Status: Creating..." readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Job Title -->
+                                            <div class="form-group ">
                                                 <label class="control-label col-sm-5 requiredField" for="title">Job Title <span class="asteriskField">*</span></label>
                                                 <div class="col-sm-7">
                                                     <div class="input-group">
                                                         <div class="input-group-addon"><i class="fa fa-briefcase"></i></div>
-                                                        <input class="form-control" id="eventtitle" name="eventTitle" type="text" value="" placeholder="Enter the Job Title" />
+                                                        <input class="form-control" id="eventtitle" name="eventtitle" type="text" value="" placeholder="Enter the Job Title" />
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Job Scheduled Start Date and Time -->
                                             <div class="form-group ">
                                                 <label class="control-label col-sm-5 requiredField" for="start">Scheduled Start <span class="asteriskField">*</span></label>
                                                 <div class="col-sm-7">
@@ -195,6 +203,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Job Scheduled End Date and Time -->
                                             <div class="form-group ">
                                                 <label class="control-label col-sm-5 requiredField" for="end">Scheduled End <span class="asteriskField">*</span></label>
                                                 <div class="col-sm-7">
@@ -204,6 +213,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Job Description -->
                                             <div class="form-group ">
                                                 <label class="control-label col-sm-5 requiredField" for="description">Job Description <span class="asteriskField">*</span></label>
                                                 <div class="col-sm-7">
@@ -213,6 +223,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Job Contact (Full Name) -->
                                             <div class="form-group ">
                                                 <label class="control-label col-sm-5 requiredField" for="contact">Contact Name <span class="asteriskField">*</span></label>
                                                 <div class="col-sm-7">
@@ -222,15 +233,17 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Job Site -->
                                             <div class="form-group ">
                                                 <label class="control-label col-sm-5 requiredField" for="site">Site Address <span class="asteriskField">*</span></label>
                                                 <div class="col-sm-7">
                                                     <div class="input-group">
-                                                        <div class="input-group-addon"><i class="fa fa-globe"></i></div>
+                                                        <div class="input-group-addon"><i class="fa fa-home"></i></div>
                                                         <input class="form-control" id="eventsite" name="eventsite" type="text" placeholder="53.331021, -6.278107"/>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Job Technician -->
                                             <div class="form-group ">
                                                 <label class="control-label col-sm-5 requiredField" for="technician">Technician <span class="asteriskField">*</span></label>
                                                 <div class="col-sm-7">
@@ -240,6 +253,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Form Action Buttons -->
                                             <div class="form-group">
                                                 <div class="col-sm-7 col-sm-offset-5">
                                                     <button class="btn btn-primary " name="submit" type="submit">Create</button>
@@ -257,7 +271,7 @@
                                 var date_input=$('input[name="date"]');
                                 var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
                                 date_input.datepicker({
-                                    format: 'dd/mm/yyyy',
+                                    format: 'Y-MM-DD',
                                     container: container,
                                     todayHighlight: true,
                                     autoclose: true,
@@ -269,26 +283,129 @@
             </div> <!-- ./modal -->
             <!-- modaleventcreate Ends -->
 
-            <!-- modalEventEdit Starts -->
-            <div class="modal fade" id="modalEventEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+            <!-- modaleventedit Starts -->
+            <div class="modal fade" id="modaleventedit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header text-center">
-                            <strong><h3 class="modal-title" id="eventtitle"></h3></strong>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        <div class="modal-header text-center" style="height: 64px;">
+                            <h3 class="modal-title w-100 font-weight-bold" id="modaltitle"></h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
-                        <div class="modal-body" id="eventstart"></div>
-                        <div class="modal-body" id="eventend"></div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+                        <!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
+                        <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+                        <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+                        <div class="bootstrap-iso">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-10 col-sm-10 col-xs-12">
+                                        <form class="form-horizontal" id="formeventedit" method="POST">
+                                            <!-- Job Id -->
+                                            <div class="form-group " style="margin-top: 15px;" >
+                                                <label class="control-label col-sm-5 requiredField" for="id">Job Id </label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-briefcase"></i></div>
+                                                        <input class="form-control" id="eventid" name="eventid" type="text" value="" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>                                            
+                                            <!-- Job Status -->
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="status">Job Status </label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-info-circle"></i></div>
+                                                        <input class="form-control" id="eventstatus" name="eventstatus" type="text" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Job Title -->
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="title">Job Title <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-briefcase"></i></div>
+                                                        <input class="form-control validate" id="eventtitle" name="eventtitle" type="text" value="" placeholder="Enter the Job Title" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Job Scheduled Start Date and Time -->
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="start">Scheduled Start <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                                        <input class="form-control" id="eventstart" name="eventstart" type="text"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Job Scheduled End Date and Time -->
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="end">Scheduled End <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                                        <input class="form-control" id="eventend" name="eventend" type="text"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Job Description -->
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="description">Job Description <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-info-circle"></i></div>
+                                                        <textarea class="form-control" id="eventdescription" name="eventdescription" style="min-width: 100%; resize: none;" maxlength="1024" placeholder="Enter the Job Description" ></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Job Contact (Full Name) -->
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="contact">Contact Name <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                                        <input class="form-control" id="eventcontact" name="eventcontact" type="text" placeholder="Enter the Contact Name" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Job Site -->
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="site">Site Address <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-home"></i></div>
+                                                        <input class="form-control" id="eventsite" name="eventsite" type="text" placeholder="53.331021, -6.278107"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Job Technician -->
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="technician">Technician <span class="asteriskField">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                                        <input class="form-control" id="eventtechnician" name="eventtechnician" type="text" placeholder="Enter the Technician" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Form Action Buttons -->
+                                            <div class="form-group">
+                                                <div class="col-sm-7 col-sm-offset-5">
+                                                    <button class="btn btn-primary" name="submit" type="submit">Update</button>
+                                                    <button class="btn btn-dangerous" type="button" data-dismiss="modal">Delete</button>
+                                                    <button class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <!-- modalEventEdit Ends -->
+                    </div> <!-- ./modal-content -->
+                </div> <!-- ./modal-dialog -->
+            </div> <!-- ./modal -->
+            <!-- modaleventedit Ends -->
 
             <!-- anotherModal Starts -->
             <!-- 

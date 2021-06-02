@@ -1,6 +1,6 @@
 <?php
 
-// Load the Scheduler View
+// Route: '/' - Root - Calls the Scheduler UI
 $app->get('/', function ($request, $response, $args)
 {
     $view = file_get_contents('./front-end/scheduler.html');
@@ -11,43 +11,44 @@ $app->get('/', function ($request, $response, $args)
 registerEvents($app);
 registerUsers($app);
 
-// Users Service
+// Users Service - All Users Routes
 function registerUsers(&$app)
 {
+    // Route: '/api/users' - GET Users List: All
     $app->get('/api/users', function ($request, $response, $args)
     {
         return $this->get('UsersController')->list($request, $response, $args);
     });
 }
 
-// Events Service
+// Events Service - All Events Routes
 function registerEvents(&$app)
 {
-    // GET Events List: All
+    // Route: '/api/events' - GET Events List: All
     $app->get('/api/events', function ($request, $response, $args)
     {
         return $this->get('EventsController')->list($request, $response, $args);
     });
 
-    // GET Events by ID
+    // Route: '/api/events/{id}' - GET Events by ID
     $app->get('/api/events/{id}', function ($request, $response, $args)
     {
         return $this->get('EventsController')->get($request, $response, $args);
     });
 
-    // CREATE Events
+    // Route: '/api/events' - Create (POST) New Events
     $app->post('/api/events', function ($request, $response, $args)
     {
         return $this->get('EventsController')->create($request, $response, $args);
     });
 
-    // UPDATE Events by ID
+    // Route: '/api/events/{id}' - Update (POST) Events by ID
     $app->post('/api/events/{id}', function ($request, $response, $args)
     {
         return $this->get('EventsController')->update($request, $response, $args);
     });
 
-    // DELETE Events by ID
+    // Route: '/api/events/{id}' - DELETE Events by ID
     $app->delete('/api/events/{id}', function ($request, $response, $args)
     {
         return $this->get('EventsController')->delete($request, $response, $args);

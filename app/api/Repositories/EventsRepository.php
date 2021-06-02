@@ -78,12 +78,17 @@ class EventsRepository
             ->delete();
     }
 
+    // Validate the Job (Event) Fields
     private function validateEvent(array $event): array
     {
         return [
             'title' => $event['title'],
             'start' => $event['start'],
             'end' => $event['end'],
+            'description' => $event['description'],
+            'contact' => $event['contact'],
+            'site' => $event['site'],
+            'technician' => $event['technician'],
         ];
     }
 }
