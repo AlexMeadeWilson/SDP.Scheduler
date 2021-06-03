@@ -58,6 +58,7 @@
                     editable:true,
                     eventResize:function(event)
                     {
+                        var id = event.id;
                         var status = event.status;
                         var title = event.title;
                         var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
@@ -69,7 +70,7 @@
                         $.ajax({
                             url: api_host + "/api/events/" + event.id,
                             type:"POST",
-                            data:{status:status, title:title, start:start, end:end, description:description, contact:contact, site:site, technician:technician},
+                            data:{id:id, status:status, title:title, start:start, end:end, description:description, contact:contact, site:site, technician:technician},
                             
                             success:function()
                             {
@@ -81,6 +82,7 @@
                     },
                     eventDrop:function(event)
                     {
+                        var id = event.id;
                         var status = event.status;
                         var title = event.title;
                         var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
@@ -92,7 +94,7 @@
                         $.ajax({
                             url: api_host + "/api/events/" + event.id,
                             type:"POST",
-                            data:{status:status, title:title, start:start, end:end, description:description, contact:contact, site:site, technician:technician},
+                            data:{id:id, status:status, title:title, start:start, end:end, description:description, contact:contact, site:site, technician:technician},
                             
                             success:function()
                             {
@@ -152,7 +154,7 @@
                                                 <div class="col-sm-7">
                                                     <div class="input-group">
                                                         <div class="input-group-addon"><i class="fa fa-briefcase"></i></div>
-                                                        <input class="form-control" id="eventid" name="eventid" type="text" value="" placeholder="Job Id (Auto-generated)" readonly />
+                                                        <input class="form-control" readonly id="eventid" name="eventid" type="text" value="" placeholder="(Auto-generated)" />
                                                     </div>
                                                 </div>
                                             </div>                                            
@@ -162,7 +164,7 @@
                                                 <div class="col-sm-7">
                                                     <div class="input-group">
                                                         <div class="input-group-addon"><i class="fa fa-info-circle"></i></div>
-                                                        <input class="form-control" id="eventstatus" name="eventstatus" type="text" placeholder="Job Status: Creating..." readonly />
+                                                        <input class="form-control" readonly id="eventstatus" name="eventstatus" type="text" placeholder="Pending" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -241,12 +243,8 @@
                                                 <label class="control-label col-sm-5 requiredField" for="technician">Delete Job </label>
                                                 <div class="col-sm-7">
                                                     <div class="input-group">
-                                                        <!-- <label for="eventdelete">Check this box to Delete this Job.</label> -->
-                                                        <div class="input-group-addon"><input class="form-check-label" id="eventdelete" name="eventdelete" type="checkbox" value="" /></div>
-                                                        <!-- <input class="form-check-label" id="eventdelete" name="eventdelete" type="checkbox" value="" /> -->
-                                                        <input class="form-control" readonly id="eventdelete" name="eventdelete" type="text" placeholder="Check the box to delete the Job." />
-
-
+                                                        <div class="input-group-addon"><i class="fa fa-trash"></i></div>
+                                                        <input class="form-control" id="eventdelete" name="eventdelete" type="text" placeholder="Type 'Delete' & save to delete Job." autocomplete="off" />
                                                     </div>
                                                 </div>
                                             </div>

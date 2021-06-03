@@ -1,5 +1,6 @@
 $(document).ready(function()
 {
+    // Register the listeners on the DOM
     registerModalListeners();
 });
 
@@ -13,11 +14,13 @@ function registerModalListeners()
         $(this).find('input, textarea, select').each(function(i, field){
             values[field.name] = field.value;
         });
-
-        if(values.eventid)
+        
+        // Check if the Job is tagged with 'delete' (lika a captcha)
+        if(values.eventdelete.toLowerCase() == 'delete')
         {
-            console.log("Action: updateEvent");
-            updateEvent({
+            // Delete the Job
+            console.log("Action: deleteEvent");
+            deleteEvent({
                 id: values.eventid,
                 status: values.eventstatus,
                 title: values.eventtitle,
@@ -31,28 +34,50 @@ function registerModalListeners()
         }
         else
         {
-            console.log("Action: createEvent");
-            createEvent({
-                // No Id for New Jobs - Auto-incremented
-                status: values.eventstatus,
-                title: values.eventtitle,
-                start: values.eventstart,
-                end: values.eventend,
-                description: values.eventdescription,
-                contact: values.eventcontact,
-                site: values.eventsite,
-                technician: values.eventtechnician,
-            });
+            if(values.eventid)
+            {
+                // If there is an ID - Update the Job
+                console.log("Action: updateEvent");
+                updateEvent({
+                    id: values.eventid,
+                    status: values.eventstatus,
+                    title: values.eventtitle,
+                    start: values.eventstart,
+                    end: values.eventend,
+                    description: values.eventdescription,
+                    contact: values.eventcontact,
+                    site: values.eventsite,
+                    technician: values.eventtechnician,
+                });           
+            }
+            else
+            {
+                // If there is no ID - Create the Job
+                console.log("Action: createEvent");
+                createEvent({
+                    // No Id for New Jobs - Auto-incremented
+                    status: values.eventstatus,
+                    title: values.eventtitle,
+                    start: values.eventstart,
+                    end: values.eventend,
+                    description: values.eventdescription,
+                    contact: values.eventcontact,
+                    site: values.eventsite,
+                    technician: values.eventtechnician,
+                });
+            }
         }
-        
     });
 }
 
-function createEventModal(event) {
-    
+// Function to call the Create Event Modal and populate it.
+function createEventModal(event)
+{
+    // Format the values of the Start and End Date Times.    
     var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
     var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
 
+    // Populate the Modal values.
     getModalTitle().html("Job Details");
     getEventId().val(event.id);
     getEventStatus().val(event.status);
@@ -67,6 +92,7 @@ function createEventModal(event) {
     getModalEventCreate().modal();
 }
 
+// Function to Create an Event via the API
 function createEvent(event) {
     console.log("Calling: /api/events POST");
     $.ajax({
@@ -83,6 +109,7 @@ function createEvent(event) {
     })
 }
 
+// Function to Update an Event via the API
 function updateEvent(event) {
     console.log("Calling: /api/events/"+event.id+" POST");
     $.ajax({
@@ -99,19 +126,21 @@ function updateEvent(event) {
     })
 }
 
+// Function to Delete an Event via the API
 function deleteEvent(event) {
-    if(confirm("Are you sure you want to delete this?"))
-    {
-        $.ajax({
-            url: api_host + "/api/events/" + event.id,
-            type:"DELETE",
-            success:function()
-            {
-                getCalendar().fullCalendar('refetchEvents');
-                getModalEventCreate().modal('hide');
-            }
-        })
-    }
+    console.log("Calling: /api/events/"+event.id+" DELETE");
+    $.ajax({
+        url: api_host + "/api/events/" + event.id,
+        type:"DELETE",
+        success:function()
+        {
+            console.log("Action: refetchEvents");
+            getCalendar().fullCalendar('refetchEvents');
+            console.log("Action: modal hide");
+            getModalEventCreate().modal('hide');
+        }
+    })
 }
+
 
 
