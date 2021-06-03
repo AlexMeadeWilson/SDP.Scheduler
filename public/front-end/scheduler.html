@@ -49,27 +49,11 @@
                     selectHelper:true,
                     select: function(start, end, allDay)
                     {
+                        // Creating a New Event (Job)
                         createEventModal({
                             start: start,
                             end: end,
                         });
-                        // var title = prompt("Enter Event Title");
-                        // if(title)
-                        // {
-                        //     var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
-                        //     var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
-                        //     $.ajax({
-                        //         url: api_host + '/api/events',
-                        //         type:"POST",
-                        //         data:{title:title, start:start, end:end},
-
-                        //         success:function()
-                        //         {
-                        //             calendar.fullCalendar('refetchEvents');
-                        //             alert("Event added successfully");
-                        //         }
-                        //     })
-                        // }
                     },
                     editable:true,
                     eventResize:function(event)
@@ -120,8 +104,7 @@
                     },
                     eventClick:function(event)
                     {
-                        // TODO: This needs to go back to updateEventModal when parsing back to the UI is solved.
-                        updateEventModal(event)
+                        createEventModal(event)
                     },
                 }); /*./calendar */
             });
@@ -253,11 +236,25 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Delete Job -->
+                                            <div class="form-group ">
+                                                <label class="control-label col-sm-5 requiredField" for="technician">Delete Job </label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <!-- <label for="eventdelete">Check this box to Delete this Job.</label> -->
+                                                        <div class="input-group-addon"><input class="form-check-label" id="eventdelete" name="eventdelete" type="checkbox" value="" /></div>
+                                                        <!-- <input class="form-check-label" id="eventdelete" name="eventdelete" type="checkbox" value="" /> -->
+                                                        <input class="form-control" readonly id="eventdelete" name="eventdelete" type="text" placeholder="Check the box to delete the Job." />
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <!-- Form Action Buttons -->
                                             <div class="form-group">
                                                 <div class="col-sm-7 col-sm-offset-5">
-                                                    <button class="btn btn-primary " name="submit" type="submit">Create</button>
-                                                    <button class="btn btn-secondary " type="button" data-dismiss="modal">Cancel</button>
+                                                    <button class="btn btn-primary " name="submit" type="submit" id="Save">Save</button>
+                                                    <button class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -283,156 +280,9 @@
             </div> <!-- ./modal -->
             <!-- modaleventcreate Ends -->
 
-            <!-- modaleventedit Starts -->
-            <div class="modal fade" id="modaleventedit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header text-center" style="height: 64px;">
-                            <h3 class="modal-title w-100 font-weight-bold" id="modaltitle"></h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        </div>
-                        <!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
-                        <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
-                        <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
-                        <div class="bootstrap-iso">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-md-10 col-sm-10 col-xs-12">
-                                        <form class="form-horizontal" id="formeventedit" method="POST">
-                                            <!-- Job Id -->
-                                            <div class="form-group " style="margin-top: 15px;" >
-                                                <label class="control-label col-sm-5 requiredField" for="id">Job Id </label>
-                                                <div class="col-sm-7">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon"><i class="fa fa-briefcase"></i></div>
-                                                        <input class="form-control" id="eventid" name="eventid" type="text" value="" readonly />
-                                                    </div>
-                                                </div>
-                                            </div>                                            
-                                            <!-- Job Status -->
-                                            <div class="form-group ">
-                                                <label class="control-label col-sm-5 requiredField" for="status">Job Status </label>
-                                                <div class="col-sm-7">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon"><i class="fa fa-info-circle"></i></div>
-                                                        <input class="form-control" id="eventstatus" name="eventstatus" type="text" readonly />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Job Title -->
-                                            <div class="form-group ">
-                                                <label class="control-label col-sm-5 requiredField" for="title">Job Title <span class="asteriskField">*</span></label>
-                                                <div class="col-sm-7">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon"><i class="fa fa-briefcase"></i></div>
-                                                        <input class="form-control validate" id="eventtitle" name="eventtitle" type="text" value="" placeholder="Enter the Job Title" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Job Scheduled Start Date and Time -->
-                                            <div class="form-group ">
-                                                <label class="control-label col-sm-5 requiredField" for="start">Scheduled Start <span class="asteriskField">*</span></label>
-                                                <div class="col-sm-7">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                                        <input class="form-control" id="eventstart" name="eventstart" type="text"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Job Scheduled End Date and Time -->
-                                            <div class="form-group ">
-                                                <label class="control-label col-sm-5 requiredField" for="end">Scheduled End <span class="asteriskField">*</span></label>
-                                                <div class="col-sm-7">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                                        <input class="form-control" id="eventend" name="eventend" type="text"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Job Description -->
-                                            <div class="form-group ">
-                                                <label class="control-label col-sm-5 requiredField" for="description">Job Description <span class="asteriskField">*</span></label>
-                                                <div class="col-sm-7">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon"><i class="fa fa-info-circle"></i></div>
-                                                        <textarea class="form-control" id="eventdescription" name="eventdescription" style="min-width: 100%; resize: none;" maxlength="1024" placeholder="Enter the Job Description" ></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Job Contact (Full Name) -->
-                                            <div class="form-group ">
-                                                <label class="control-label col-sm-5 requiredField" for="contact">Contact Name <span class="asteriskField">*</span></label>
-                                                <div class="col-sm-7">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                                        <input class="form-control" id="eventcontact" name="eventcontact" type="text" placeholder="Enter the Contact Name" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Job Site -->
-                                            <div class="form-group ">
-                                                <label class="control-label col-sm-5 requiredField" for="site">Site Address <span class="asteriskField">*</span></label>
-                                                <div class="col-sm-7">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon"><i class="fa fa-home"></i></div>
-                                                        <input class="form-control" id="eventsite" name="eventsite" type="text" placeholder="53.331021, -6.278107"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Job Technician -->
-                                            <div class="form-group ">
-                                                <label class="control-label col-sm-5 requiredField" for="technician">Technician <span class="asteriskField">*</span></label>
-                                                <div class="col-sm-7">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                                        <input class="form-control" id="eventtechnician" name="eventtechnician" type="text" placeholder="Enter the Technician" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Form Action Buttons -->
-                                            <div class="form-group">
-                                                <div class="col-sm-7 col-sm-offset-5">
-                                                    <button class="btn btn-primary" name="submit" type="submit">Update</button>
-                                                    <button class="btn btn-dangerous" type="button" data-dismiss="modal">Delete</button>
-                                                    <button class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> <!-- ./modal-content -->
-                </div> <!-- ./modal-dialog -->
-            </div> <!-- ./modal -->
-            <!-- modaleventedit Ends -->
-
-            <!-- anotherModal Starts -->
-            <!-- 
-            <div class="modal-body mx-3">
-                <div class="md-form mb-5">
-                    <label data-error="wrong" data-success="right" for="orangeForm-name">Event Title</label>
-                    <input type="text" id="title" class="form-control validate">                                
-                </div>
-                <div class="md-form mb-5">
-                    <label data-error="wrong" data-success="right" for="orangeForm-email">Event Start</label>
-                    <input type="datetime" id="start" class="form-control validate">
-                </div>
-                <div class="md-form mb-4">
-                    <label data-error="wrong" data-success="right" for="orangeForm-pass">Event End</label>
-                    <input type="datetime" id="end" class="form-control validate">                                
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">CREATE</button>
-            </div> -->
-            <!-- anotherModal Ends -->
-
             <!-- Testing Buttons -->
             <div class="text-center">
                 <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modaleventcreate">modaleventcreate</a>
-                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modaleventedit">modaleventedit</a>
             </div>
         </div>
         <script src="front-end/scripts/constants.js"></script>

@@ -8,8 +8,8 @@ function getFormEventCreate() {
     return $('#formeventcreate');
 }
 
-function getFormEventEdit() {
-    return $('#formeventedit');
+function getFormEventUpdate() {
+    return $('#formeventupdate');
 }
 
 // Get Modals & Values
@@ -17,8 +17,8 @@ function getModalEventCreate() {
     return $('#modaleventcreate');
 }
 
-function getModalEventEdit() {
-    return $('#modaleventedit');
+function getModalEventUpdate() {
+    return $('#modaleventupdate');
 }
 
 function getModalTitle() {
