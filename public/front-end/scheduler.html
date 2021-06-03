@@ -28,7 +28,7 @@
         <script>
             $(document).ready(function()
             {
-                /* calendar */
+                // Build the Calendar and apply properties and attributes
                 var calendar = $('#calendar').fullCalendar({
                     editable:true,
                     header:
@@ -49,7 +49,7 @@
                     selectHelper:true,
                     select: function(start, end, allDay)
                     {
-                        // Creating a New Event (Job)
+                        // When a User Clicks on a day/empty space, call the Create/Update Modal.
                         createEventModal({
                             start: start,
                             end: end,
@@ -58,6 +58,7 @@
                     editable:true,
                     eventResize:function(event)
                     {
+                        // When a User resizes an event, changing Start and End, update that event inline.
                         var id = event.id;
                         var status = event.status;
                         var title = event.title;
@@ -82,6 +83,7 @@
                     },
                     eventDrop:function(event)
                     {
+                        // When a User Drags & Drops an event, update that event inline.
                         var id = event.id;
                         var status = event.status;
                         var title = event.title;
@@ -106,6 +108,7 @@
                     },
                     eventClick:function(event)
                     {
+                        // When a User Clicks on an event, call the Create/Update Modal.
                         createEventModal(event)
                     },
                 }); /*./calendar */
@@ -277,11 +280,6 @@
                 </div> <!-- ./modal-dialog -->
             </div> <!-- ./modal -->
             <!-- modaleventcreate Ends -->
-
-            <!-- Testing Buttons -->
-            <div class="text-center">
-                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modaleventcreate">modaleventcreate</a>
-            </div>
         </div>
         <script src="front-end/scripts/constants.js"></script>
         <script src="front-end/scripts/events.js"></script>

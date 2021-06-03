@@ -26,7 +26,8 @@ class EventsRepository
     {
         return $this->database
             ->table('events')
-            ->whereRaw('start < CURDATE()')
+            ->whereRaw('Date(start) < CURDATE()')
+            ->orderBy('start', 'asc')
             ->get();
     }
 
@@ -35,7 +36,8 @@ class EventsRepository
     {
         return $this->database
             ->table('events')
-            ->whereRaw('start >= CURDATE() AND start < CURDATE() + 1')
+            ->whereRaw('Date(start) = CURDATE()')
+            ->orderBy('start', 'asc')
             ->get();
     }
 
@@ -44,7 +46,8 @@ class EventsRepository
     {
         return $this->database
             ->table('events')
-            ->whereRaw('start > CURDATE()')
+            ->whereRaw('Date(start) > CURDATE()')
+            ->orderBy('start', 'asc')
             ->get();
     }
 

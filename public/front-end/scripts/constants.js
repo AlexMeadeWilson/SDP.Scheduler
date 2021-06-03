@@ -17,15 +17,11 @@ function getModalEventCreate() {
     return $('#modaleventcreate');
 }
 
-function getModalEventUpdate() {
-    return $('#modaleventupdate');
-}
-
 function getModalTitle() {
     return $('#modaltitle');
 }
 
-// Get Event Values
+// Get Event Properties
 function getEventId() {
     return $('#eventid');
 }
