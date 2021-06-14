@@ -1,2 +1,1 @@
-var api_host = 'https://bc0b18fc12ea.ngrok.io';
-// var api_host = 'https://knuth.griffith.ie/~s2950871/';
+var api_host = 'https://1a2a3eddb189.ngrok.io';

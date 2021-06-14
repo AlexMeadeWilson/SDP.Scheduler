@@ -9,19 +9,19 @@ $app->get('/', function ($request, $response, $args)
 });
 
 registerEvents($app);
-registerUsers($app);
+registerTechnicians($app);
 
-// Users Service - All Users Routes
-function registerUsers(&$app)
+// Technicians Service - All Technicians Routes
+function registerTechnicians(&$app)
 {
-    // Route: '/api/users' - GET Users List: All
-    $app->get('/api/users', function ($request, $response, $args)
+    // Route: '/api/technicians' - GET Technicians List: All
+    $app->get('/api/technicians', function ($request, $response, $args)
     {
-        return $this->get('UsersController')->list($request, $response, $args);
+        return $this->get('TechniciansController')->list($request, $response, $args);
     });
 }
 
-// Events Service - All Events Routes
+// Events (Jobs) Service - All Events (Jobs) Routes
 function registerEvents(&$app)
 {
     // Route: '/api/events' - GET Events List: All

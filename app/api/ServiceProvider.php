@@ -5,8 +5,8 @@ namespace SlimJIM;
 use DI\Container;
 use SlimJIM\Controllers\EventsController;
 use SlimJIM\Repositories\EventsRepository;
-use SlimJIM\Controllers\UsersController;
-use SlimJIM\Repositories\UsersRepository;
+use SlimJIM\Controllers\TechniciansController;
+use SlimJIM\Repositories\TechniciansRepository;
 
 class ServiceProvider
 {
@@ -58,10 +58,10 @@ class ServiceProvider
             );
         });
 
-        // Repository: Users
-        $this->container->set('UsersRepository', function($container)
+        // Repository: Technicians
+        $this->container->set('TechniciansRepository', function($container)
         {
-            return new UsersRepository(
+            return new TechniciansRepository(
                 $container->get('db')
             );
         });
@@ -78,11 +78,11 @@ class ServiceProvider
             );
         });
 
-        // Controller: Users
-        $this->container->set('UsersController', function($container)
+        // Controller: Technicians
+        $this->container->set('TechniciansController', function($container)
         {
-            return new UsersController(
-               $container->get('UsersRepository')
+            return new TechniciansController(
+               $container->get('TechniciansRepository')
             );
         });
     }
