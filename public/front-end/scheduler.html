@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Merlin Media (by SlimJIM)</title>
+        <title>SlimJIM</title>
         <!-- Favicon links -->
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -40,6 +40,7 @@
                     events:
                     {
                         url: api_host + '/api/events',
+                        color: '#00B3F0',
                         error: function(e)
                         {
                             console.log(e);
@@ -112,6 +113,7 @@
                         createEventModal(event)
                     },
                 }); /*./calendar */
+
             });
         </script>
     </head>
@@ -237,7 +239,18 @@
                                                 <div class="col-sm-7">
                                                     <div class="input-group">
                                                         <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                                        <input class="form-control" id="eventtechnician" name="eventtechnician" type="text" placeholder="Enter the Technician" />
+                                                        <select class="form-control" id="eventtechnician" name="eventtechnician">
+                                                            <option value="Mike Bloomberg">Mike Bloomberg</option>
+                                                            <option value="Mike Collins">Mike Collins</option>
+                                                            <option value="Mike Fieldworker">Mike Fieldworker</option>
+                                                            <option value="Mike Jordan">Mike Jordan</option>
+                                                            <option value="Mike Knight">Mike Knight</option>
+                                                            <option value="Mike Myers">Mike Myers</option>
+                                                            <option value="Mike Pence">Mike Pence</option>
+                                                            <option value="Mike Phelps">Mike Phelps</option>
+                                                            <option value="Mike Schumacher">Mike Schumacher</option>
+                                                            <option value="Mike Tyson">Mike Tyson</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
